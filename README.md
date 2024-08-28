@@ -4,7 +4,7 @@ C++ game
 
 # Compile
 ```
-g++ snake.cpp -lSDL2 -o snake
+g++ snake.cpp -lSDL2 -std=c++20 -o snake
 ```
 
 # Execution
