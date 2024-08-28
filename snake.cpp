@@ -1,4 +1,13 @@
 #include <SDL2/SDL.h>
+#include <vector>
+#include <algorithm>
+#include <deque>
+
+/**
+
+ #####
+
+ */
 
 int main(){
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -17,6 +26,19 @@ int main(){
 	bool running = true;
 	int dir =0;
 	SDL_Rect head {500,500,10,10};
+
+	// Snake body container
+	std::deque<SDL_Rect> rq;
+	int size = 1;
+	
+	// Apple container
+	std::vector<SDL_Rect> apples;
+
+	// Create apples on the map
+	for (int i = 0; i < 100; i++ ){
+		apples.emplace_back(rand()%100*10, rand()%100*10, 10, 10);
+	}
+
 	while(running){
 		// check input
 		while(SDL_PollEvent(&e)){
@@ -39,14 +61,46 @@ int main(){
 			case RIGHT:
 				head.x += 10; break;
 		}	
+		// Collision detection
+		std::for_each(apples.begin(), apples.end(), [&](auto& apple){
+			if(head.x == apple.x && head.y == apple.y){
+				size +=10;
+				apple.x = -10;
+				apple.y = -10;	
+			}
+		});
+		// Collision detection with snake body
+		
+		std::for_each(rq.begin(), rq.end(), [&](auto& snake_segment){
+			if(head.x == snake_segment.x && head.y == snake_segment.y){
+				size = 1;
+			}
+		});
+		// add newest head to the snake
+		rq.push_front(head);
+		
+		while(rq.size() > size)
+			rq.pop_back();
+		
+
 		// Clear Window
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
 		// Draw Body
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		std::for_each(rq.begin(), rq.end(), [&](auto& snake_segment){
+			SDL_RenderFillRect(renderer, &snake_segment);
+		});
 		SDL_RenderFillRect(renderer, &head);
+		
+		// Draw Apples
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		std::for_each(apples.begin(), apples.end(), [&](auto& apple){
+			SDL_RenderFillRect(renderer, &apple);
+		});
 
+		// Display
 		SDL_RenderPresent(renderer);
 		SDL_Delay(25);
 	}	
