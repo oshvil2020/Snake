@@ -4,7 +4,7 @@ SDL2
 
 ## Compile
 ```
-g++ snake.cpp -lSDL2 -std=c++20 -o snake
+g++ main.cpp -lSDL2 -std=c++20 -o snake
 ```
 
 ## Execution
