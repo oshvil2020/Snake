@@ -32,3 +32,8 @@ The Snake class manages the state and behavior of the snake in the game. It hand
 
 ### Apple Class
 The Apple class is responsible for managing the apples in the game. It controls the position of each apple and handles the logic for respawning apples in new locations when they are eaten by the snake. The class provides methods to render the apples on the screen and to retrieve their current position.
+
+## To Run the Test:
+1 - Install Google Test (`gtest`).
+2 - Compile your Snake class and the test file (`SnakeTest.cpp`) together with gtest.
+3 - Run the resulting binary to execute the unit tests.
